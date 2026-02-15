@@ -56,3 +56,34 @@ export const decodeBullet = async (bulletText: string): Promise<DeepDiveData> =>
 
   return JSON.parse(response.text);
 };
+
+export const extractTextFromResumeFile = async (base64Data: string, mimeType: string): Promise<string> => {
+  const response = await ai.models.generateContent({
+    model: 'gemini-3-flash-preview',
+    contents: [
+      {
+        inlineData: {
+          data: base64Data,
+          mimeType: mimeType,
+        },
+      },
+      {
+        text: "Extract the text from this resume. Format it clearly as plain text. Use ALL CAPS for section headers. Use bullet points (starting with a dash '-') for experience details. Maintain the original structure and content exactly. If it's a DOCX or PDF, ensure the hierarchy is preserved.",
+      },
+    ],
+  });
+
+  return response.text || '';
+};
+
+export const extractTextFromUrl = async (url: string): Promise<string> => {
+  const response = await ai.models.generateContent({
+    model: 'gemini-3-flash-preview',
+    contents: `I have a resume hosted at this URL: ${url}. Please retrieve the text content from this document. Format it with ALL CAPS headers and '-' bullet points for achievements. If you cannot access the URL directly, explain why.`,
+    config: {
+      tools: [{ googleSearch: {} }],
+    },
+  });
+
+  return response.text || '';
+};
