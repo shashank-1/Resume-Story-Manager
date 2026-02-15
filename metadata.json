@@ -1,0 +1,5 @@
+{
+  "name": "Resume Storyteller",
+  "description": "An interactive resume analysis tool that uses AI to expand professional bullet points into STAR stories, metrics, and interview-ready narratives.",
+  "requestFramePermissions": []
+}
